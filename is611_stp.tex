@@ -1,0 +1,108 @@
+z\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage{dejavu}
+
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[letterpaper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]{geometry}
+
+\begin{document}
+\input{is611_header.tex}
+\begin{center}
+
+\noindent\rule{\textwidth}{1pt}
+\huge{Spanning-tree Protocol}
+\noindent\rule{\textwidth}{1pt}
+\end{center}
+%\title{Resumen sobre Spanning-Tree Protocol}
+ %\author{José Mario López}
+ %\date{\today}
+%\maketitle
+ 
+ \section{Introducción}   
+Las redes están diseñadas por lo general con enlaces y dispositivos redundantes. Estos diseños eliminan la posibilidad de que un punto de fallo individual origine al mismo tiempo varios problemas que deben ser tenidos en cuenta. Sin algún servicio que evite bucles, cada switch inundaría las difusiones en un bucle infinito.
+
+ \subsection{Bucles de capa 2}
+La propagación continua de disfusiones a través de un bucle produce una tormenta de difusión, lo que da como resultado un desperdicio del ancho de banda, así como impactos serios en el rendimiento de la red. Pordían ser distribuidas múltiples copias de tramas sin difusión a los puertos de destino. Esta situación se conoce como bucle de capa o bucle de puente.
+Muchos protocolos esperan recibir una sola copia de cada trasmisión. La presencia de múltiples copias de la misma trama podría ser causa de errores irrecuperables. Una inestabilidad en el contenido de la tabla de direcciones MAC da como resultado que se reciban varias copias de una misma trama en diferentes puertos del switch.
+
+ \subsection{Solución a los bucles de capa 2}
+STP es un protocolo de capa 2 publicado en la especificación del estándar IEEE 802.1d.
+El objetivo de STP es mantener una red libre de bucles. Un camino libre de bucles se consigue cuando un dispositivo es capaz de reconocer un bucle en la topología y bloquear uno o más puertos redundantes.
+STP explora constantemente la red, de forma que cualquier fallo o adición en un enlace, switch o bridge es detectado al instante. Cuando cambia la topología de red, el algoritmo STP reconfigura los puertos del switch para evitar una pérdidad total de conectividad.
+Los switches intercambian información multicast a través de las BPDU (Bridge Protocol Data Unit) cada dos segundos, si se detecta alguna anormalidad en algún puerto, STP cambiará de estado dicho puerto automáticamente utilizando algún camino redundante sin que se pierda conectividad en la red.
+Cada switch envía las BPDU a través de un puerto usando la dirección MAC de ese puerto como dirección de origen, el switch no sabe de la existencia de otros switches, por lo que las BPDU son enviadas con la dirección de destino multicast 01-80-C2-00-00-00.
+Existen dos tipos de BPDU:
+\begin{itemize}
+\item \textbf{Configuration BPDU}: utilizadas para el cálculo de STP.
+\item \textbf{Topology Change Notification (TCN) BPDU}: utilizada para anunciar los cambios en la topología de la red.
+\end{itemize}
+
+\subsection{Proceso STP}
+STP funciona automáticamente siguiendo los siguientes criterios:
+\begin{description}
+\item [a) Elección de un switch raíz] En un dominio de difusión solo debería existir un switch raíz. Todos los puertos del bridge raíz se encuentran en estado enviado y se denominan puertos designados. Cuando está en este modo, un puerto puede enviar y recibir tráfico. La elección de un switch raíz se lleva a cabo determinando el switch que posea la menor prioridad. Este valor es la suma de la prioridad por defecto dentro de un rango de 1 al 65536, y el ID del switch equivalente a la dirección MAC. Por defecto la prioridad es 32768 y es un valor configurable. Un administrador puede cambiar la elección del switch raíz por diversos motivos configurando un valor de prioridad menor a 32768. Los demás switches del dominio se llaman switch no raíz.
+
+\item [b) Puertos designados] El puerto designado es el que conecta los segmentos al switch raíz y solo puede haber un puerto designado por segemento. Los puertos designados se encuentran en estado de retransmisión y son los responsables del reenvío de tráfico entre segmentos. Los puertos no designados se encuentran normalmene en estado de bloqueo con el fin de romper la topología de bucle. 
+\end{description}
+
+\subsection{Estado de los puertos STP}
+Los puertos participan de STP toman diferentes estados según su funcionalidad en la red.
+\begin{description}
+\item[a) bloqueado:]  inicialmente todos los puertos se encuentran en este estado. Si STP determina que el puerto debe continuar en ese estado, solo escuchará las BPDU pero no las reenviará.
+\item[b) escuchando:] en este estado los puertos determinan la mejor topología enviando y recibiendo las BPDU.
+\item[c) aprendiendo:] el puerto comienza a completar su tabla MAC, pero aún no envía tramas. El puerto se prepara para evitar inundaciones innecesarias.
+\item[d) enviando:]el puerto comienza a enviar y recibir tramas.
+Existe un quinto estado que puede llamarse desactivado y ocurre cuando el puerto se encuentra fisicamente desconectado o anulado por el sistema operativo, aunque no es un estado real de STP pues no participa de la operativa STP.
+\end{description}
+
+\textit{\textbf{Nota:} El tiempo que le lleva a STP el cambio de estado de un puerto desde bloqueo a envío es de 50 segundos.}
+
+\subsection{RAPID SPANNING TREE PROTOCOL}
+\textbf{RSTP} es la versión mejorada de STP definido por el estándar IEEE 802.1w. El protocolo RSTP funciona con los mismos parámetros básicos que su antecesor:
+\begin{itemize}
+\item Designa el switch raíz con las mismas condiciones que STP.
+\item Elige el puerto raíz del switch no raíz con las mismas reglas.
+\item Los puertos designados segmentan la LAN con los mismos criterios.
+\end{itemize}
+A pesar de estas similitudes con STP, el modo rápido mejora la convergencia entre los dispositivos ya qeu STP tarda 50 segundo en pasar del estado bloqueado a enviando, en 50 segundos  mientas que RSTP lo hace prácticamente de inmediato sin necesidad de que los puertos pasen por los otros estados. RSTP es compatible con switches que solo utilicen STP.
+
+En una topología RSTP el root bridge se elige de la misma manera que en el estándar 802.1d. Una vez que todos los switches están de acuerdo en la identificación del root, se determinan los roles de los puertos que pueden ser los siguientes:
+\begin{description}
+\item[Puerto raíz] es el puerto con el menor coste hacia el switch raíz.
+\item[Puerto designado] es el puerto de un segmento de LAN que está en el switch raíz, y forma parte de un enlace activo. Este puerto es el que envía las BPDU hacia abajo en el árbol de STP.
+\item[Puerto alternativo] es un puerto que tiene un camino alternativo hacia el switch raíz y diferente del camino que utiliza el puerto raíz. Este camino es menos deseable que el puerto raíz.
+\item[Puerto de backup] proporciona redundacia en un segmento donde otro switch está conectado. Si este segmento común se pierde el switch no podría tener otro camino hacia el raíz.
+\end{description}
+
+RSTP solo define estados de puertos acorde a lo que el switch hace con las tramas que le llegan. Un puerto puede tener algunos de los siguientes estados:
+\begin{description}
+\item[Descartando] las tramas de entrada simplemente son eliminadas, no se aprende ninguna dirección MAC; este estado combina los estados desconectado, bloqueando y aprendiendo del 802.1d
+\item[Aprendiendo] las tramas que le llegan son eliminadas pero las direcciones MAC quedan almacenadas.
+\item[Enviando] las tramas de entrada son enviadas acorde a la dirección MAC que han sido aprendidas.
+\end{description}
+
+\subsection{PER-VLAN SPANNING TREE}
+PVST es una versión propietaria de Cisco de STP que ofrece mayor flexibilidad que la versión estándar, el cual opera una instancia STP por cada de las VLAN. Esto permite que cada instancia de STP se configure independientemente ofreciendo mayor rendimiento y optimizando las condiciones.\newline 
+
+Al tener múltiples instancias de STP es posible el balanceo de carga en los enlaces redundantes cuando son asignados a diferentes VLAN.\newline
+
+\textbf{PVST+} (Per-Vlan Spanning Tree Plus) es una segunda versión propietaria que Cisco tiene de STP que permite interoperar con PVST y STP. El PVST+ es soportado por los switches Catalyst que ejecuten PVST, PVST+ y STP sobre enlaces 802.1q.\newline
+
+La eficiencia de cada instancia de STP puede aun mejorarse configurando el switch para que utilice \textbf{RPVST+} (Rapid Per VLAN STP Plus) esto significa que cada VLAN tendrá su propia instancia independiente de RSTP ejecutándose en el switch. Solamente será necesario un paso en la configuración para cambiar el modo de STP para comenzar a utilizar RPVST+, esto se lleva a cabo con el siguiente comando:\\
+
+%\begin{lstlisting}
+\texttt{Switch(config)\# spanning-tree mode rapid-pvst}
+%\end{lstlisting}
+
+\vspace{10pt}
+PVST+ actúa como un traductor entre grupos de switches STP y grupos PVST. PVST+ se comunica directamente con PVST con trunk ISL, mientras que con STP intercambia BPDU como tramas no etiquetadas.
+\vfill
+
+\input{footer_gral.tex}
+
+\end{document}

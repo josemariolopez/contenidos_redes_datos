@@ -1,0 +1,62 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage{dejavu}
+
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[letterpaper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]{geometry}
+
+\begin{document}
+
+\begin{center}
+%\includegraphics{logo_unah.png}\\
+\input{is611_header.tex}
+
+\noindent\rule{\textwidth}{1pt}
+\huge{VLAN e Introducción a VTP}
+\noindent\rule{\textwidth}{1pt}
+\end{center}
+%\title{Resumen sobre Spanning-Tree Protocol}
+ %\author{José Mario López}
+ %\date{\today}
+%\maketitle
+ 
+\section{Introducción}   
+La utilización de VLAN contribuye, sin duda, a gestionar mejor la infraestructura de red, pues son varios los beneficios que obtenemos al configuralas, sin embargo, a medida que aumenta el número de switches en la red de empresas pequeñas o medianas, la tarea de administrar las VLAN y los enlaces troncales en una red se vuelve un desafío, y es allí donde entra en juego el protocolo VTP.
+
+\subsection{VTP - VLAN Trunk Protocol}
+
+\textbf{VTP} es un protocolo propietario de Cisco, que está disponible en la mayoría de los equipos de la serie Catalyst, que reduce la administración de VLAN en una red conmutada.
+
+ \subsection{Conceptos de VTP}
+  \subsubsection{Publicaciones del VTP}
+VTP usa una jerarquía de publicaciones para distribuir y sincronizar las configuraciones de la VLAN a través de la red.
+
+ \subsubsection{Dominio de VTP}
+Consiste en uno o más switches interconectados. Todos los switches en un dominio comparten los detalles de configuración de la VLAN con las publicaciones del VTP. \textbf{Un router o switch de Capa 3 define el límite de cada dominio}.\\
+Un dominio VTP se identifica por un nombre y adicionalmente, puede configurarse una contraseña VTP para que el switch pueda formar parte del dominio, dicha contraseña debe ser igual en todos los switches, sino, no podrá establecerse la conectividad.
+
+\subsubsection{Modos de operación de VTP}
+ \begin{description}
+ \item[Servidor VTP] Los servidores del VTP publican la información VLAN del dominio del VTP a otros switches habilitados por VTP en el mismo dominio VTP. Los servidores VTP guardan la información de la VLAN para el dominio completo en la NVRAM. El servidor es donde la VLAN puede ser creada, eliminada o redenominada para el dominio.
+ \item[Cliente del VTP] Los clientes VTP funcionan de la misma manera que los servidores VTP pero no se puede crear, cambiar ni eliminar las VLAN en un cliente VTP. Un cliente VTP sólo guarda la información de la VLAN para el dominio completo mientras el switch está activado. Un reinicio del switch borra la información de la VLAN. Para indicar que un switch funciona en modo cliente, debe configurarlo en ese modo explícitamente. Es importante mencionar, que de manera predeterminada los switches están en modo Servidor.
+ \item[VTP transparente] Los switches en modo transparente reenvían publicaciones del VTP a los clientes VTP y servidores VTP; pero no participan de las actualizaciones de VTP. Las VLAN que se crean, redenominan o se eliminan en los switches transparentes son locales a ese switch solamente.
+ \end{description}
+
+
+%\begin{lstlisting}
+%Router(config)\# router rip
+%Router(config-router)\# network \textit{dirección de red}
+%Router(config-router)\# version \textit{versión}
+%Router(config-router)\# maximun-paths \textit{número}
+%Router(config-router)\# no auto-summary
+%Router(config-router)\# redistribute static
+%\end{lstlisting}
+%\vspace{5px}
+
+\input{footer_gral.tex}
+\end{document}

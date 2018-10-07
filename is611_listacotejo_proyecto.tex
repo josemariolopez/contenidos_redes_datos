@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+%\usepackage[spanish]{babel}
+%\usepackage[T1]{fontenc}
+%\usepackage{dejavu}
+\usepackage{enumitem}
+\usepackage[table,xcdraw]{xcolor}
+
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[letterpaper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]{geometry}
+%\renewcommand{\item}[1]{\item \textbf{#1}}
+\begin{document}
+
+\input{is611_header.tex}
+\begin{center}
+\noindent\rule{\textwidth}{1pt}
+{\huge\textbf Diseño y documentación de una red de datos}\\
+\vspace{10px}
+Lista de cotejo de Proyecto de Asignatura
+\noindent\rule{\textwidth}{1pt}
+\end{center}
+
+\section{Temas a evaluar en el desarrollo del proyecto}
+\begin{enumerate}
+\item Direccionamiento en IPv4
+\item DHCP
+\item VLANs y VTP
+\item Spanning Tree Protocol (STP)
+\item Listas de Control de Acceso (ACL)
+\item Redundancia física de enlaces en Capa 2 y Capa 3
+\item Configuración de redundancia de gateway con protocolos HSRP y GLBP.
+\item Enrutamiento dinámico con RIPv2, EIGRP y OSPF
+\item Seguridad de puertos de switch
+\item Configuración de comandos básicos en dispositivos Cisco:
+	\begin{itemize}
+    	\item Hostname
+    	\item Banner motd
+        \item Habilitación de SSH a través de líneas VTY
+        \item Contraseña de consola
+        \item Contraseña enable
+        \item Encriptamiento de contraseñas
+        \item logging synchronous.
+    \end{itemize}
+\end{enumerate}
+
+\section{Evaluación del proyecto}
+\begin{enumerate}
+\item ¿el estudiante presenta el esquema de direccionamiento IPv4 LAN y WAN? (1 punto)	sí	no
+\item ¿el estudiante presenta el diagrama de topología?	(1 punto) sí	no
+\item ¿el estudiante presenta la documentación de equipo utilizado?(1 punto)	sí	no
+\item ¿ el estudiante presenta la documentación de contraseñas de los dispositivos?(1 punto)	sí	no
+\item ¿ el estudiante presenta la documentación de DHCP?(1 punto)	sí	no
+\item ¿el diseño de la topología cumple con redundancia física LAN y WAN? (5 puntos)
+\item ¿se ha configurado redundancia de gateway? (2 puntos)	sí	no
+\item ¿se ha configurado protección de puertos en los switches? (2 puntos)	sí	no
+\item ¿se ha configurado VLANS y VTP, y se presenta la documentación? (2 puntos)
+\item ¿la topología tiene complemente configurado el direccionamiento IPv4? (2 puntos)
+\item ¿se ha configurado el DHCP en los routers que era necesario? (1 punto)
+\item ¿se ha realizado la configuración de los parámetros básicos? (2 puntos)
+\item ¿se han configurado los protocolos de enrutamiento dinámico, redistribución y presenta documentación? (4 punto)
+\item ¿la conectividad entre hosts de distintas empresas es exitosa? (2 puntos)
+\item ¿se responden [correctamente] las siguientes preguntas? (6 puntos)
+\begin{enumerate}
+\item ¿cuáles son las topologías LAN y WAN que identifica en su diseño?
+\item ¿cuál es la utilidad de implementar STP en la topología?
+\item ¿Cuál protocolo de enrutamiento es mejor para utilizar en la topología, EIGRP u OSPF?
+\item ¿El equipo ha configurado correctamente la ACL solicitada?
+\item Haga una lista de recomendaciones para futuros estudiantes que realizarán un proyecto de asignatura similar.
+\item Haga una lista de aspectos que le llamaron la atención de trabajar el proyecto de asignatura
+\item Haga una lista de aspectos que considera que debe reforzar en relación a la asignatura de Redes de Datos I
+\item Haga una votación en su equipo, ¿cuál fue el integrante más valioso para el desarrollo del proyecto?
+\end{enumerate}
+\end{enumerate}
+
+Los estudiantes deben colocar su nombre en este espacio seguido de su firma. Al firmar, los estudiantes aceptan la calificación asignada.
+%\newpage
+\vfill
+{\textbf {\normalsize José Mario López}}
+
+{\small Profesor de la asignatura\\}
+
+{\footnotesize 
+
+\end{document}

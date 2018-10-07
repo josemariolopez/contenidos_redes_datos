@@ -1,0 +1,211 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+%\usepackage[spanish]{babel}
+%\usepackage[T1]{fontenc}
+%\usepackage{dejavu}
+\usepackage{enumitem}
+\usepackage[table,xcdraw]{xcolor}
+
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[letterpaper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]{geometry}
+%\renewcommand{\item}[1]{\item \textbf{#1}}
+\begin{document}
+
+\input{is611_header.tex}
+\begin{center}
+\noindent\rule{\textwidth}{1pt}
+{\huge\textbf Diseño y documentación de una red de datos}\\
+\vspace{10px}
+Proyecto de Asignatura
+\noindent\rule{\textwidth}{1pt}
+\end{center}
+
+\section{Introducción} 
+El objetivo del desarrollo del proyecto es afianzar habiliades en la configuración y comprensión del funcionamiento de protocolos de enrutamiento dinámico, gestión de VLANs y características detalladas de una red local como agregación de enlaces, seguridad lógica en dispositivos de red y redundancia de gateway. Además, el proyecto propicia que el estudiante conozca y seleccione equipos de red para utilizarlos en una topología que cumpla con los requerimientos presentados, y gestionar una documentación adecuada de la misma.
+
+\section{Temas a conocer para el desarrollo del proyecto}
+\begin{enumerate}
+\item Direccionamiento en IPv4
+\item DHCP
+\item VLANs y VTP
+\item Spanning Tree Protocol (STP)
+\item Listas de Control de Acceso (ACL)
+\item Redundancia física de enlaces en Capa 2 y Capa 3
+\item Configuración de redundancia de gateway con protocolos HSRP y GLBP.
+\item Enrutamiento dinámico con RIPv2, EIGRP y OSPF
+\item Seguridad de puertos de switch
+\item Configuración de comandos básicos en dispositivos Cisco:
+	\begin{itemize}
+    	\item Hostname
+    	\item Banner motd
+        \item Habilitación de SSH a través de líneas VTY
+        \item Contraseña de consola
+        \item Contraseña enable
+        \item Encriptamiento de contraseñas
+        \item logging synchronous.
+    \end{itemize}
+\end{enumerate}
+
+\section{Descripción del proyecto}
+\subsection{Direccionamiento en IPv4}
+\subsubsection{Requerimientos de direccionamiento para usuarios}
+Se pide diseñar una topología de red que cumpla con los siguientes requerimientos de direccionamiento:
+
+\textbf{Empresa \#1 Inversiones La Paz, S.A.}
+\begin{enumerate}
+\item 95 usuarios del departamento de Ventas
+\item 13 usuarios del departamento de Compras
+\item 14 usuarios del departamento de Dirección
+\end{enumerate}
+
+\textbf{Empresa \#2 Aire Frio}
+\begin{enumerate}
+\item 20 usuarios en el área de técnicos
+\item 5 usuarios del área de administración
+\item 2 usuarios del área de dirección
+\end{enumerate}
+
+\textbf{Empresa \#3 Consultores Emprendo}
+\begin{enumerate}
+\item 60 usuarios en el área de capacitación
+\item 5 usuarios del área de gestión
+\item 10 usuarios del área de invitados (acceso inlámbrico)
+\end{enumerate}
+
+\subsubsection{Tareas a realizar}
+\begin{enumerate}
+\item Definir estructura de direccionamiento, teniendo en cuenta que el espacio de direcciones es 172.16.0.0/16 para la empresa\#1, 192.168.10.0/25 para la empresa\#2, y 192.168.11.0/25 para la empresa\#3. Para conexiones WAN use bloques /30, a partir de 10.0.0.0
+\item Diseñar topología de red que cumpla con redundancia física en capa 2 y capa 3.
+%\item Implementar la topología diseñada en Packet Tracer v. 7.1
+\item Documentar la asignación de direcciones IPv4 utilizando los ANEXOS 1 y 2.
+\end{enumerate}
+
+\subsection{Implementación de la topología}
+\subsubsection{Packet Tracer v. 7.1}
+\begin{enumerate}
+\item Realizar la conexión de la topología en Packet Tracer. Utilice el ANEXO 3 para el registro de los dispositivos.
+\item Configurar el direccionamiento IPv4
+\item Realizar la configuración de los parámetros básicos. Para el hostname utilice R o S, según corresponda seguido de un número, e.g. R1. Para el registro de contraseñas utilice el ANEXO 4.
+\end{enumerate}
+
+\subsubsection{Configuración de VLANs}
+\begin{enumerate}
+\item Habilite VTP. Registre el nombre de dominio y el password utilizado.
+\item Cree las VLANs necesarias y haga el registro del VLAN ID, el nombre asignado y el propósito.
+\end{enumerate}
+
+\subsubsection{Configuración de enrutamiento dinámico}
+\begin{enumerate}
+\item Los routers de la empresa\#1 anuncian con EIGRP. Utilice la wildcard correspondiente. AS 101.
+\item Los routers de la empresa\#2 anuncian con OSPF. ID 100.
+\item Los routers de la empresa\#3 anuncian con EIGRP. AS 102
+\item Realice la redistribución de información de enrutamiento en los routers que corresponda.
+\item Haga un registro del protocolo que utiliza cada dispositivo, con su respectivo AS o ID según corresponda. Utilice los ANEXOS para tomar una guía.
+\end{enumerate}
+
+\subsection{Seguridad de los equipos}
+\begin{enumerate}
+\item Habilite seguridad en los switches para que los puertos aprendan un maximo de 5 direcciones MAC.
+\item Habilite las ACL respectivas (se enunciarán a posterior)
+\end{enumerate}
+
+\section{Presentación}
+Debe entregar un archivo de Packet Tracer con el proyecto desarrollado. Adicional, debe presentar un documento con la documentación (ANEXOS solicitados).
+El documento debe tener la siguiente estructura:
+\begin{enumerate}
+\item Portada
+\item Breve descripción del proyecto
+\item Índice de anexos
+\item Anexos
+\item Hoja que contenga la autoevaluación de cada miembro del grupo. (guiarse de la pregunta: ¿De 0-5 qué calificación merece su desempeño en la realización del proyecto?)
+\end{enumerate}
+
+Las hojas del documento deben ir \textbf{grapadas}. No presente folder, sobre de papel manila o cualquier extra.
+El documento debe ir impreso a doble cara.
+
+
+%%%%
+\newpage
+\section{ANEXO 1}
+
+\noindent Nombre de empresa:\\
+Espacio de direccionamiento:\\
+
+\begin{table}[ht]
+\centering
+\caption{Registro de direccionamiento IPv4 -  LAN}
+\begin{tabular}{|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\# subred & Dirección de red & Dirección de broadcast & Gateway & Máscara de subred & Espacio utilizado & Espacio libre            \\ \hline
+          &                  &                        &         &                    &                   & \\ \hline
+          &                  &                        &         &                    &                   & \\ \hline
+          &                  &                        &         &                    &                   & \\ \hline
+          &                  &                        &         &                    &                   & \\ \hline
+\end{tabular}
+\end{table}
+%%%%
+
+\section{ANEXO 2}
+
+\begin{table}[ht]
+\centering
+\caption{Registro de direccionamiento IPv4 - WAN}
+\begin{tabular}{|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\# subred & Router extremo 1 & Dirección IP & Router extremo 2 & Dirección IP\\ \hline
+          &                  &                        &         &                     \\ \hline
+          &                  &                        &         &                     \\ \hline
+          &                  &                        &         &                    \\ \hline
+          &                  &                        &         &                    \\ \hline
+\end{tabular}
+\end{table}
+
+\section{ANEXO 3}
+\begin{table}[ht]
+\centering
+\caption{Registro de equipo utilizado}
+\begin{tabular}{|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Cantidad & Tipo de equipo & Modelo & \# y tipo de interfaces\\ \hline
+          &                  &                        &               \\ \hline
+          &                  &                        &                    \\ \hline
+          &                  &                        &                   \\ \hline
+          &                  &                        &                   \\ \hline
+\end{tabular}
+\end{table}
+* tipo de equipo: router o switch
+
+\section{ANEXO 4}
+\begin{table}[ht]
+\centering
+\caption{Registro de contraseñas}
+\begin{tabular}{|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|p{0.10\linewidth}|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+Hostname & enable & línea de consola & línea VTY\\ \hline
+          &                  &                        &               \\ \hline
+          &                  &                        &                    \\ \hline
+          &                  &                        &                   \\ \hline
+          &                  &                        &                   \\ \hline
+\end{tabular}
+\end{table}
+%%%%
+%\newpage
+\vfill
+{\textbf {\normalsize José Mario López}}
+
+{\small Profesor de la asignatura\\}
+
+{\footnotesize 
+15 de agosto de 2018
+}
+
+\end{document}

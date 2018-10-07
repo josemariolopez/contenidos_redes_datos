@@ -1,0 +1,95 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage{dejavu}
+
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[letterpaper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]{geometry}
+
+\begin{document}
+
+\begin{center}
+%\includegraphics{logo_unah.png}\\
+\bfseries{Universidad Nacional Autónoma de Honduras}\\
+Facultad de Ingeniería\\
+Departamento de Ingeniería en Sistemas\\
+\bigskip
+\bigskip
+IS-611 Redes de Datos 2\\
+I PAC 2018
+
+\noindent\rule{\textwidth}{1pt}
+\huge{ENRUTAMIENTO DINÁMICO}
+\noindent\rule{\textwidth}{1pt}
+\end{center}
+%\title{Resumen sobre Spanning-Tree Protocol}
+ %\author{José Mario López}
+ %\date{\today}
+%\maketitle
+ 
+ \section{Introducción}   
+Los cambios que una red puede experimentar hacen poco factible la utilización de rutas estáticas, el administrador se vería forzado a reconfigurar los routers ante cada cambio. El enrutamiento dinámico permite que los routers actualicen conocimientos antes posibles cambios sin tener que recurrir a nuevas configuraciones. Un protocolo de enrutamiento permite determinar dinámicamente las rutas y mantener actualizadas sus tablas.
+
+ \subsection{Enrutamiento VECTOR DISTANCIA}
+Los algoritmos de enrutamiento basados en vectores pasan copias periódicas de una tabla de enrutamiento de un router a otro y acumulan vectores de distancia. Distancia es una medida de longitud, mientras qeu vector significa una dirección. Cada protocolo de enrutamiento basado en vectores de distancia utiliza un algoritmo distinto para determinar la ruta óptima. El algoritmo genera un número, denominado métrica de ruta, para cada ruta existente a través de la red. 
+
+\textbf{RIP}(Routing Information Protocol) es un protocolo suministrado con los sistemas UNIX. Es el protocolo de gateway interior más comunmente utilizado. RIP utiliza el número de saltos como métrica de enrutamiento. Existen dos versiones, RIP v1 como protocolo tipo Classful y RIP v2, más completo, como protocolo Classless.
+
+ \subsection{RIP}
+ Es uno de los protocolos de enrutamiento más antiguos utilizado por dispositivos basados en IP. Su implementación original fue para el protocolo Xerox a principios de los 80. Ganó popularidad cuando se distribuyó con UNIX como protocolo de enrutamiento para esa implementación TCP/IP. RIP es un protocolo vector de distancia que utiliza la cuenta de \textbf{saltos} del router como métrica. La cuenta de saltos máxima de RIP es de 15. Cualquier ruta que exceda de los 15 saltos se etiqueta como inalcanzable al establecerse la cuenta de saltos en 16. En RIP la información de enrutamiento se propaga de un router a los otros vecinos por medio de una difusión de IP usando el protocolo UDP y el puerto 520.
+
+El protocolo \textbf{RIPv1} es un protocolo de enrutamiento con clase que no admite la publicación de información de la máscara de red. El protocolo \textbf{RIPv2} es un protocolo sin clase que admite CIDR, VLSM, resumen de rutas y seguridad mediante texto simple y autenticación MD5.
+\\
+Algunas características comparativas entre RIPv1 y RIPv2 son las siguientes:
+\begin{itemize}
+\item RIP es un protocolo de enrutamiento basado en vectores de distancia.
+\item RIP utiliza el número de saltos como métrica para la selección de rutas.
+\item El número máximo de saltos permitidos en RIP es 15
+\item RIP difunde actualizaciones de enrutamiento por medio de la tabla de enrutamiento completa cada 30 segundos, por omisión.
+\item RIP puede realizar equilibrado de carga en un máximo de seis rutas de igual coste (la especificación por omisión es de cuatro rutas).
+\item RIP requiere que se use una sola máscara de red para cada número de red de clase principal qeu es anunciado. La máscara es una máscara de subred de longitud fija. El estándar RIPv1 no contempla actualizaciones desencadenadas.
+\item RIPv2 permite la utilización de VLSM. El estándar RIPv2 permite actualizaciones desencadenadas, a diferencia de RIPv1. La definición del número máximo de rutas paralelas permitidas en la tabla de enrutamiento faculta a RIP para llevar a cabo el equilibrado de carga.
+\end{itemize}
+
+El proceso de configuración de RIP es bastante simple, una vez iniciado el proceso de configuración se deben especificar las redes que participan en el enrutamiento. Si es necesario, la versión y el balanceo de ruta.\\\vspace{5px}
+
+\begin{lstlisting}
+Router(config)\# router rip\\
+Router(config-router)\# network \textit{dirección de red}\\
+Router(config-router)\# version \textit{versión}\\
+Router(config-router)\# maximun-paths \textit{número}\\
+Router(config-router)\# no auto-summary\\\\
+Router(config-router)\# redistribute static
+\end{lstlisting}
+\vspace{5px}
+\\
+Donde:
+\begin{itemize}
+\item \textbf{network} especifica las redes directamente conectadas al router que serán anunciadas por RIP.
+\item \textbf{version} adopta un valor de 1 o 2 para especificar la versión de RIP que se va a utilizar. Si no se especifica la versión, el software de IOS adopta como opción predeterminada el envío de RIP versión 1 pero recibe actualizaciones de ambas versiones.
+\item \textbf{maximum-paths} (opcional) habilita el equilibrado de carga.
+\item \textbf{no auto-summary} Indica al router no realizar la sumarización de rutas con clase, sino que utilizar las máscaras de longitud variable de cada red.
+\item \textbf{redistribute static} indica a RIPv2 que incluya en las actualizaciones de enrutamiento las rutas estáticas configuradas localmente.
+\end{itemize}
+
+Algunos de los comandos que se pueden utilizar para la verificación de RIP pueden ser
+\begin{itemize}
+\item \textbf{show ip route} muestra la tabla de enrutamiento donde las rutas aprendidas por RIP llevan la letra R.
+\item \textbf{show ip protocols} muestra la información de los protocolos que se están ejecutando en el router.
+\item \textbf{debug ip rip} muestra los procesos que ejecuta RIP.
+\end{itemize}
+\vfill
+{\textbf {\normalsize José Mario López}}
+
+{\small Profesor de la asignatura\\}
+
+{\footnotesize 
+El contenido fue tomado de Ariganello, Ernesto. Redes Cisco, Guía de estudio para la certificación CCNA Routing y Switching (2014).
+
+De presentarse alguna duda respecto al contenido del resumen, recuerde que puede avocarse al Departamento de Ing. En Sistemas, en hora de consulta de 15:00 – 16:00 de lunes a viernes; o enviar un correo a jmlopezc@unah.edu.hn}
+
+\end{document}
